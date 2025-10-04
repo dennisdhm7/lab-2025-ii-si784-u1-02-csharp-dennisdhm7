@@ -1,4 +1,5 @@
 name: Package NuGet
+
 on: 
   push:
     branches:
@@ -15,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 👈 Necesario para que SonarCloud detecte correctamente el historial del repo
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -24,18 +27,29 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore ./Bank/Bank.WebApi/Bank.WebApi.csproj
 
+      - name: Begin SonarCloud Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet tool install --global dotnet-sonarscanner
+          export PATH="$PATH:/home/runner/.dotnet/tools"
+          dotnet sonarscanner begin \
+            /o:"cdhm" \
+            /k:"dennisdhm7_lab-2025-ii-si784-u1-02-csharp-dennisdhm7" \
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.host.url="https://sonarcloud.io"
+
+      - name: Build project
+        run: dotnet build ./Bank/Bank.WebApi/Bank.WebApi.csproj -c Release --no-restore
+
       - name: Run Unit Tests and Coverage
         run: dotnet test ./Bank/Bank.WebApi.Tests/Bank.WebApi.Tests.csproj --collect:"XPlat Code Coverage"
 
-      - name: SonarCloud Analysis
-        uses: SonarSource/sonarcloud-github-action@master
+      - name: End SonarCloud Analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: >
-            -Dsonar.organization=cdhm
-            -Dsonar.projectKey=cdhm_lab-2025-ii-si784-u1-02-csharp-dennisdhm7
+        run: |
+          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
       - name: Build NuGet Package
         run: dotnet pack ./Bank/Bank.WebApi/Bank.WebApi.csproj -c Release -o ./nuget
