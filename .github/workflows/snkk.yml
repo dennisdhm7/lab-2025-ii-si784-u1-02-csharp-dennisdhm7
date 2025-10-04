@@ -23,8 +23,10 @@ jobs:
           sudo apt-get install -y nodejs npm
           npm install -g snyk-to-html
 
-      - name: Run Snyk test and generate HTML report
-        run: snyk code test --json | snyk-to-html -o snyk-report.html
+      - name: Run Snyk test (SARIF + HTML)
+        run: |
+          snyk code test --sarif-file-output=snyk.sarif
+          snyk code test --json | snyk-to-html -o snyk-report.html
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
