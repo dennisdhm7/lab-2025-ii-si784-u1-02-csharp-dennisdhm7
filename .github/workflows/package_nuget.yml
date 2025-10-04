@@ -4,6 +4,8 @@ on:
     branches:
       - main
       - master
+    tags:
+      - 'v*.*.*'
   workflow_dispatch:
 
 jobs:
@@ -25,13 +27,15 @@ jobs:
       - name: Run Unit Tests and Coverage
         run: dotnet test ./Bank/Bank.WebApi.Tests/Bank.WebApi.Tests.csproj --collect:"XPlat Code Coverage"
 
-      - name: SonarCloud Analysis (opcional)
-        continue-on-error: true
-        run: |
-          echo "Skipping SonarCloud because permissions are missing in GitHub Classroom."
+      - name: SonarCloud Analysis
+        uses: SonarSource/sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=cdhm
+            -Dsonar.projectKey=cdhm_lab-2025-ii-si784-u1-02-csharp-dennisdhm7
 
       - name: Build NuGet Package
         run: dotnet pack ./Bank/Bank.WebApi/Bank.WebApi.csproj -c Release -o ./nuget
