@@ -1,34 +1,42 @@
 name: Snyk Analysis
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
 env:
-  DOTNET_VERSION: '9.x'   # versión actual de tu proyecto
-on: push
+  DOTNET_VERSION: '9.x'
 
 jobs:
   security:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - uses: snyk/actions/setup@master
-
-      - name: Configurando la versión de NET
+      - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Snyk monitor
+      - name: Setup Snyk
+        uses: snyk/actions/setup@master
+
+      - name: Run Snyk test and generate HTML report
         run: snyk code test --json | snyk-to-html -o snyk-report.html
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-      - name: Upload result to GitHub Code Scanning
+      - name: Upload SARIF report to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: snyk.sarif
 
-      - name: Upload HTML report
-        uses: actions/upload-artifact@v3
+      - name: Upload HTML report as artifact
+        uses: actions/upload-artifact@v4
         with:
           name: snyk-html-report
           path: snyk-report.html

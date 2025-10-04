@@ -2,13 +2,15 @@ name: Release Version
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'v*.*.*'      # Se ejecuta cuando haces push de un tag tipo v1.0.0
+  workflow_dispatch:   # También se puede lanzar manualmente
 
 jobs:
   release:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup .NET
@@ -16,13 +18,25 @@ jobs:
         with:
           dotnet-version: '9.x'
 
+      - name: Restore dependencies
+        run: dotnet restore ./Bank.WebApi/Bank.WebApi.csproj
+
       - name: Build Project
-        run: dotnet build -c Release
+        run: dotnet build ./Bank.WebApi/Bank.WebApi.csproj -c Release
 
       - name: Create NuGet Package
         run: dotnet pack ./Bank.WebApi/Bank.WebApi.csproj -c Release -o ./nuget
 
-      - name: Upload Release Package
-        uses: softprops/action-gh-release@v1
+      - name: Upload package as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-package
+          path: ./nuget/*.nupkg
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
           files: ./nuget/*.nupkg
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

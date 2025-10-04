@@ -1,11 +1,16 @@
 name: Package NuGet
-on: push
+on: 
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup .NET
@@ -13,19 +18,23 @@ jobs:
         with:
           dotnet-version: '9.x'
 
+      - name: Restore dependencies
+        run: dotnet restore ./Bank.WebApi/Bank.WebApi.csproj
+
       - name: Run Unit Tests and Coverage
-        run: dotnet test --collect:"XPlat Code Coverage"
+        run: dotnet test ./Bank.WebApi.Tests/Bank.WebApi.Tests.csproj --collect:"XPlat Code Coverage"
 
       - name: SonarCloud Analysis
         uses: SonarSource/sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build NuGet Package
         run: dotnet pack ./Bank.WebApi/Bank.WebApi.csproj -c Release -o ./nuget
 
       - name: Upload NuGet Package as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: nuget-package
           path: ./nuget/*.nupkg

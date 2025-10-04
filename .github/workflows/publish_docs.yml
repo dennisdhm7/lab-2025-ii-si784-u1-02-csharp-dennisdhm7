@@ -1,13 +1,15 @@
 name: Publish Documentation
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "master" ]
+  workflow_dispatch:
 
 jobs:
   build-docs:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup .NET
@@ -18,14 +20,22 @@ jobs:
       - name: Install DocFX
         run: dotnet tool install -g docfx
 
-      - name: Build documentation (init, metadata, build)
+      - name: Build Documentation (init, metadata, build)
         run: |
           docfx init -y
           docfx metadata docfx.json
           docfx build
 
+      - name: Upload generated site as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-site
+          path: ./_site
+
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./_site
+          publish_branch: gh-pages
+          force_orphan: true
