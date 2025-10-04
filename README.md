@@ -311,12 +311,147 @@ jobs:
 ---
 ## Actividades Encargadas
 1. Adicionar al archivo de snyk.yml los pasos necesarios para generar el reporte en formato HTML y subirlo como un artefacto en el resultado del job.
+```Yaml
+name: Snyk Analysis
+env:
+  DOTNET_VERSION: '9.x'   # versión actual de tu proyecto
+on: push
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: snyk/actions/setup@master
+
+      - name: Configurando la versión de NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Snyk monitor
+        run: snyk code test --json | snyk-to-html -o snyk-report.html
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: snyk.sarif
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v3
+        with:
+          name: snyk-html-report
+          path: snyk-report.html
+
+```
 2. Completar la documentación de todas las clases y generar una automatizaciòn .github/workflows/publish_docs.yml (Github Workflow) utilizando DocFx (init, metadata y build) y publicar el site de documentaciòn generado en un Github Page.
+```Yaml
+name: Publish Documentation
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.x'
+
+      - name: Install DocFX
+        run: dotnet tool install -g docfx
+
+      - name: Build documentation (init, metadata, build)
+        run: |
+          docfx init -y
+          docfx metadata docfx.json
+          docfx build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+
+```
 3. Generar una automatización de nombre .github/workflows/package_nuget.yml (Github Workflow) que ejecute:
    * Pruebas unitarias y reporte de pruebas automatizadas
    * Realice el analisis con SonarCloud.
    * Contruya un archivo .nuget a partir del proyecto Bank.Domain y lo publique como un Paquete de Github
-4. Generar una automatización de nombre .github/workflows/release_version.yml (Github Workflow) que contruya la version (release) del paquete y publique en Github Releases e incluya pero ahi no esta el test unitarios
 
+```Yaml
+name: Package NuGet
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.x'
+
+      - name: Run Unit Tests and Coverage
+        run: dotnet test --collect:"XPlat Code Coverage"
+
+      - name: SonarCloud Analysis
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Build NuGet Package
+        run: dotnet pack ./Bank.WebApi/Bank.WebApi.csproj -c Release -o ./nuget
+
+      - name: Upload NuGet Package as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: nuget-package
+          path: ./nuget/*.nupkg
+
+```
+4. Generar una automatización de nombre .github/workflows/release_version.yml (Github Workflow) que contruya la version (release) del paquete y publique en Github Releases e incluya pero ahi no esta el test unitarios
+```Yaml
+name: Release Version
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.x'
+
+      - name: Build Project
+        run: dotnet build -c Release
+
+      - name: Create NuGet Package
+        run: dotnet pack ./Bank.WebApi/Bank.WebApi.csproj -c Release -o ./nuget
+
+      - name: Upload Release Package
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./nuget/*.nupkg
+```
 
 

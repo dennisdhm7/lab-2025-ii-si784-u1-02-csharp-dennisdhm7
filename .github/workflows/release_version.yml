@@ -1,0 +1,28 @@
+name: Release Version
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.x'
+
+      - name: Build Project
+        run: dotnet build -c Release
+
+      - name: Create NuGet Package
+        run: dotnet pack ./Bank.WebApi/Bank.WebApi.csproj -c Release -o ./nuget
+
+      - name: Upload Release Package
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./nuget/*.nupkg
