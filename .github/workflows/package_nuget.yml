@@ -17,7 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 👈 Necesario para que SonarCloud detecte correctamente el historial del repo
+          fetch-depth: 0  # Necesario para que SonarCloud detecte correctamente el historial del repo
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -30,14 +30,16 @@ jobs:
       - name: Begin SonarCloud Analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           dotnet tool install --global dotnet-sonarscanner
           export PATH="$PATH:/home/runner/.dotnet/tools"
           dotnet sonarscanner begin \
             /o:"cdhm" \
-            /k:"dennisdhm7_lab-2025-ii-si784-u1-02-csharp-dennisdhm7" \
+            /k:"cdhm_lab-2025-ii-si784-u1-02-csharp-dennisdhm7" \
+            /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
-            /d:sonar.host.url="https://sonarcloud.io"
+            /d:sonar.verbose=true
 
       - name: Build project
         run: dotnet build ./Bank/Bank.WebApi/Bank.WebApi.csproj -c Release --no-restore
@@ -49,6 +51,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
+          export PATH="$PATH:/home/runner/.dotnet/tools"
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
       - name: Build NuGet Package
