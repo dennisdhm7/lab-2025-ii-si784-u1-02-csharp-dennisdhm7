@@ -1,0 +1,207 @@
+{
+  "source_base_path": "/home/runner/work/lab-2025-ii-si784-u1-02-csharp-dennisdhm7/lab-2025-ii-si784-u1-02-csharp-dennisdhm7",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Bank/Cobertura/SummaryGithub.md",
+      "output": {
+        ".html": {
+          "relative_path": "Bank/Cobertura/SummaryGithub.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Bank/disenio.md",
+      "output": {
+        ".html": {
+          "relative_path": "Bank/disenio.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "Bank/docs/Bank.WebApi.Models.BankAccount.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Bank/docs/Bank.WebApi.Models.BankAccount.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bank.WebApi.Models.BankAccount",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "Bank/docs/Bank.WebApi.Models.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Bank/docs/Bank.WebApi.Models.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bank.WebApi.Models",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "Bank/docs/Bank.WebApi.Tests.BankAccountTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Bank/docs/Bank.WebApi.Tests.BankAccountTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bank.WebApi.Tests.BankAccountTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "Bank/docs/Bank.WebApi.Tests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Bank/docs/Bank.WebApi.Tests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bank.WebApi.Tests",
+      "Summary": null
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "Bank/docs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Bank/docs/toc.html"
+        },
+        ".json": {
+          "relative_path": "Bank/docs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Bank/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "Bank/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "Bank/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Bank/toc.html"
+        },
+        ".json": {
+          "relative_path": "Bank/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "README.md",
+      "output": {
+        ".html": {
+          "relative_path": "README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "disenio.md",
+      "output": {
+        ".html": {
+          "relative_path": "disenio.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/introduction.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docs/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

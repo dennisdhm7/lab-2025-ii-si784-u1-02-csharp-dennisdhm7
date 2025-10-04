@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>SESION DE LABORATORIO N&#176; 02: PRUEBAS ESTATICAS DE SEGURIDAD DE APLICACIONES CON SNYK </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="SESION DE LABORATORIO N&#176; 02: PRUEBAS ESTATICAS DE SEGURIDAD DE APLICACIONES CON SNYK ">
+      
+      
+      <link rel="icon" href="favicon.ico">
+      <link rel="stylesheet" href="public/docfx.min.css">
+      <link rel="stylesheet" href="public/main.css">
+      <meta name="docfx:navrel" content="toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/dennisdhm7/lab-2025-ii-si784-u1-02-csharp-dennisdhm7/blob/v1.0.0/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="index.html">
+            <img id="logo" class="svg" src="logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+
+<p><a href="https://classroom.github.com/open-in-codespaces?assignment_repo_id=20892037"><img src="https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg" alt="Open in Codespaces"></a></p>
+<h1 id="sesion-de-laboratorio-n-02-pruebas-estaticas-de-seguridad-de-aplicaciones-con-snyk">SESION DE LABORATORIO N° 02: PRUEBAS ESTATICAS DE SEGURIDAD DE APLICACIONES CON SNYK</h1>
+<h1 id="nombre-y-apellidos-christian-dennis-hinojosa-mucho">NOMBRE Y APELLIDOS: CHRISTIAN DENNIS HINOJOSA MUCHO</h1>
+<h2 id="objetivos">OBJETIVOS</h2>
+<ul>
+<li>Comprender el funcionamiento de las pruebas estaticas de seguridad de còdigo de las aplicaciones que desarrollamos utilizando Snyk.</li>
+</ul>
+<h2 id="requerimientos">REQUERIMIENTOS</h2>
+<ul>
+<li>Conocimientos:
+<ul>
+<li>Conocimientos básicos de Bash (powershell).</li>
+<li>Conocimientos básicos de Contenedores (Docker).</li>
+</ul>
+</li>
+<li>Hardware:
+<ul>
+<li>Virtualization activada en el BIOS..</li>
+<li>CPU SLAT-capable feature.</li>
+<li>Al menos 4GB de RAM.</li>
+</ul>
+</li>
+<li>Software:
+<ul>
+<li>Windows 10 64bit: Pro, Enterprise o Education (1607 Anniversary Update, Build 14393 o Superior)</li>
+<li>Docker Desktop</li>
+<li>Powershell versión 7.x</li>
+<li>Net 8 o superior</li>
+<li>Visual Studio Code</li>
+</ul>
+</li>
+</ul>
+<h2 id="consideraciones-iniciales">CONSIDERACIONES INICIALES</h2>
+<ul>
+<li>Clonar el repositorio mediante git para tener los recursos necesarios</li>
+<li>Tener una cuenta de Github valida.</li>
+</ul>
+<h2 id="desarrollo">DESARROLLO</h2>
+<h3 id="parte-i-configuración-de-la-herramienta-de-pruebas-estaticas-de-seguridad-de-la-aplicación">Parte I: Configuración de la herramienta de Pruebas Estaticas de Seguridad de la Aplicación</h3>
+<ol>
+<li><p>Ingrear a la pagina de Snyk (<a href="https://snyk.io/">https://snyk.io/</a>), iniciar sesión o registrarse con su cuenta de Github.</p>
+</li>
+<li><p>En la pagina de Snyk, ingresar a la opción Account Settings.</p>
+<p><img src="https://github.com/UPT-FAING-EPIS/lab_calidad_02/assets/10199939/2b08058f-87d7-44ca-91b7-7f032374fd36" alt="image"></p>
+</li>
+<li><p>En la pagina de Snyk, generar un nuevo token con cualquier nombre, luego de generar el token, guardar el resultado en algún archivo o aplicación de notas puesto que se utilizará más adelante.</p>
+<p><img src="https://github.com/UPT-FAING-EPIS/lab_calidad_02/assets/10199939/0634dbf8-6721-4dfe-b258-2012594f90e4" alt="image"></p>
+</li>
+<li><p>Iniciar la aplicación Powershell o Windows Terminal en modo administrador</p>
+</li>
+<li><p>En el terminal, ejecutar los siguientes comandos para instalar snyk.</p>
+</li>
+</ol>
+<pre><code class="lang-Bash">scoop bucket add snyk https://github.com/snyk/scoop-snyk
+scoop install snyk   
+</code></pre>
+<ol start="6">
+<li>En el terminal, ejecutar los siguientes comandos para instalar snyk-to-html</li>
+</ol>
+<pre><code class="lang-Bash">scoop install nvm
+nvm install lts
+nvm use lts
+npm install snyk-to-html -g
+</code></pre>
+<ol start="7">
+<li>Cerrar el terminal para que se actualicen las variables de entorno.</li>
+</ol>
+<h3 id="parte-ii-creación-de-la-aplicación">Parte II: Creación de la aplicación</h3>
+<ol>
+<li>Iniciar la aplicación Powershell o Windows Terminal en modo administrador.</li>
+<li>En el terminal, Ejecutar el siguiente comando para crear una nueva solución</li>
+</ol>
+<pre><code>dotnet new sln -o Bank
+dotnet tool install -g dll2mmd
+dotnet tool install -g docfx
+dotnet tool install -g dotnet-reportgenerator-globaltool
+</code></pre>
+<ol start="3">
+<li>En el terminal, Acceder a la solución creada y ejecutar el siguiente comando para crear una nueva libreria de clases y adicionarla a la solución actual.</li>
+</ol>
+<pre><code>cd Bank
+dotnet new webapi -o Bank.WebApi
+dotnet sln add ./Bank.WebApi/Bank.WebApi.csproj
+</code></pre>
+<ol start="4">
+<li>En el terminal, Ejecutar el siguiente comando para crear un nuevo proyecto de pruebas y adicionarla a la solución actual</li>
+</ol>
+<pre><code>dotnet new mstest -o Bank.WebApi.Tests
+dotnet sln add ./Bank.WebApi.Tests/Bank.WebApi.Tests.csproj
+dotnet add ./Bank.WebApi.Tests/Bank.WebApi.Tests.csproj reference ./Bank.WebApi/Bank.WebApi.csproj
+</code></pre>
+<ol start="5">
+<li><p>Iniciar Visual Studio Code (VS Code) abriendo el folder de la solución como proyecto. En el proyecto Bank.Domain, si existe un archivo Class1.cs proceder a eliminarlo. Asimismo en el proyecto Bank.Domain.Tests si existiese un archivo UnitTest1.cs, también proceder a eliminarlo.</p>
+</li>
+<li><p>En el Visual Studio Code, en el proyecto Bank.WebApi proceder la carpeta <code>Models</code> y dentro de esta el archivo BankAccount.cs e introducir el siguiente código:</p>
+</li>
+</ol>
+<pre><code class="lang-C#">namespace Bank.WebApi.Models
+{
+    public class BankAccount
+    {
+        private readonly string m_customerName;
+        private double m_balance;
+        private BankAccount() { }
+        public BankAccount(string customerName, double balance)
+        {
+            m_customerName = customerName;
+            m_balance = balance;
+        }
+        public string CustomerName { get { return m_customerName; } }
+        public double Balance { get { return m_balance; }  }
+        public void Debit(double amount)
+        {
+            if (amount &gt; m_balance)
+                throw new ArgumentOutOfRangeException(&quot;amount&quot;);
+            if (amount &lt; 0)
+                throw new ArgumentOutOfRangeException(&quot;amount&quot;);
+            m_balance -= amount;
+        }
+        public void Credit(double amount)
+        {
+            if (amount &lt; 0)
+                throw new ArgumentOutOfRangeException(&quot;amount&quot;);
+            m_balance += amount;
+        }
+    }
+}
+</code></pre>
+<ol start="7">
+<li>En el Visual Studio Code, en el proyecto Bank.WepApi.Tests añadir un nuevo archivo BanckAccountTests.cs e introducir el siguiente código:</li>
+</ol>
+<pre><code class="lang-C#">using Bank.WebApi.Models;
+using NUnit.Framework;
+
+namespace Bank.WebApi.Tests
+{
+    public class BankAccountTests
+    {
+        [Test]
+        public void Debit_WithValidAmount_UpdatesBalance()
+        {
+            // Arrange
+            double beginningBalance = 11.99;
+            double debitAmount = 4.55;
+            double expected = 7.44;
+            BankAccount account = new BankAccount(&quot;Mr. Bryan Walton&quot;, beginningBalance);
+            // Act
+            account.Debit(debitAmount);
+            // Assert
+            double actual = account.Balance;
+            Assert.AreEqual(expected, actual, 0.001, &quot;Account not debited correctly&quot;);
+        }
+    }
+}
+</code></pre>
+<ol start="8">
+<li>En el Visual Studio Code, en la raiz del proyecto crear un archivo Dockerfile con el siguiente contenido:</li>
+</ol>
+<pre><code class="lang-Yaml">FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 80
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY . .
+WORKDIR &quot;/src/.&quot;
+RUN dotnet restore 
+RUN dotnet build -o /app/build
+
+FROM build AS publish
+RUN dotnet publish -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT [&quot;dotnet&quot;, &quot;Bank.WebApi.dll&quot;]
+</code></pre>
+<ol start="9">
+<li>En el terminal, ejecutar el siguiente comando para ejecutar las pruebas unitarias y el reporte de cobertura</li>
+</ol>
+<pre><code class="lang-Bash">dotnet test --collect:&quot;XPlat Code Coverage&quot;
+ReportGenerator &quot;-reports:./*/*/*/coverage.cobertura.xml&quot; &quot;-targetdir:Cobertura&quot; -reporttypes:MarkdownSummaryGithub
+</code></pre>
+<ol start="10">
+<li>En el terminal, ejecutar el siguiente comando para optener el diagrama de clases.</li>
+</ol>
+<pre><code class="lang-Bash">dll2mmd -f Bank.WebApi/bin/Debug/net8.0/Bank.WebApi.dll -o disenio.md
+</code></pre>
+<ol start="11">
+<li>En el terminal, ejecutar el siguiente comando para generar el diagrama de clases respectivo</li>
+</ol>
+<pre><code class="lang-Bash">docfx init -y
+</code></pre>
+<ol start="12">
+<li>En el Visual Studio Code, eliminar los archivos de la carpeta o directorio docs, seguidamente modificar los archivos con el siguiente contenido:</li>
+</ol>
+<blockquote>
+<p>docfx.json</p>
+</blockquote>
+<pre><code class="lang-Json">{
+  &quot;$schema&quot;: &quot;https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json&quot;,
+  &quot;metadata&quot;: [
+    {
+      &quot;src&quot;: [
+        {
+          &quot;src&quot;: &quot;.&quot;,
+          &quot;files&quot;: [
+            &quot;**/*.csproj&quot;
+          ]
+        }
+      ],
+      &quot;dest&quot;: &quot;docs&quot;
+    }
+  ],
+  &quot;build&quot;: {
+    &quot;content&quot;: [
+      {
+        &quot;files&quot;: [
+          &quot;**/*.{md,yml}&quot;
+        ],
+        &quot;exclude&quot;: [
+          &quot;_site/**&quot;
+        ]
+      }
+    ],
+    &quot;resource&quot;: [
+      {
+        &quot;files&quot;: [
+          &quot;images/**&quot;
+        ]
+      }
+    ],
+    &quot;output&quot;: &quot;_site&quot;,
+    &quot;template&quot;: [
+      &quot;default&quot;,
+      &quot;modern&quot;
+    ],
+    &quot;globalMetadata&quot;: {
+      &quot;_appName&quot;: &quot;Bank.App&quot;,
+      &quot;_appTitle&quot;: &quot;Bank App&quot;,
+      &quot;_enableSearch&quot;: true,
+      &quot;pdf&quot;: true
+    }
+  }
+}
+</code></pre>
+<blockquote>
+<p>toc.yml</p>
+</blockquote>
+<pre><code class="lang-Yaml">- name: Docs
+  href: docs/
+</code></pre>
+<blockquote>
+<p>index.md</p>
+</blockquote>
+<pre><code class="lang-Markdown">---
+_layout: landing
+---
+
+# This is the **HOMEPAGE**.
+
+## [Diagrama de Clases](disenio.md)
+
+## [Pruebas](Cobertura/SummaryGithub.md)
+</code></pre>
+<ol start="13">
+<li>En el terminal, ejecutar el siguiente comando para generar la documentacion</li>
+</ol>
+<pre><code class="lang-Bash">docfx metadata docfx.json
+docfx build
+</code></pre>
+<ol start="14">
+<li>En el terminal, ejecutar el comando para construir la imagen del contenedor:</li>
+</ol>
+<pre><code class="lang-Bash">docker build -t api-banco .
+</code></pre>
+<ol start="15">
+<li>En el terminal, verificar que la imagen se genero correcmente :</li>
+</ol>
+<pre><code class="lang-Bash">docker images 
+</code></pre>
+<blockquote>
+<p>Resultado</p>
+</blockquote>
+<pre><code>REPOSITORY                                       TAG       IMAGE ID       CREATED         SIZE  
+api-banco                                        latest    949c67f75e5e   2 minutes ago   247MB
+</code></pre>
+<ol start="16">
+<li>En el terminal, ejecutar el siguiente comando para iniciar sesión en snyk :</li>
+</ol>
+<pre><code class="lang-Bash">snyk auth &lt;TOKEN&gt;
+</code></pre>
+<blockquote>
+<p>Donde:</p>
+<ul>
+<li>TOKEN: es el token que previamente se genero en la pagina de Snyk.io</li>
+</ul>
+</blockquote>
+<ol start="17">
+<li>En el terminal, ejecutar el siguiente coamndo para realizar el analisis de codigo:</li>
+</ol>
+<pre><code class="lang-Bash">snyk code test --json | snyk-to-html -o code-test-results.html
+</code></pre>
+<ol start="18">
+<li>En el paso anterior se genero un archivo <code>code-test-results.html</code> el cual contiene el resultado del analisis que deberia ser similar a lo siguiente:</li>
+</ol>
+<p><img src="https://github.com/UPT-FAING-EPIS/lab_calidad_02/assets/10199939/1d52853d-713b-4f5b-97e5-3d6d634a8172" alt="image"></p>
+<ol start="19">
+<li>En el terminal, ejecutar el siguiente coamndo para realizar el analisis de codigo:</li>
+</ol>
+<pre><code>snyk container test api-banco --json | snyk-to-html -o container-test-result.html
+</code></pre>
+<ol start="20">
+<li>En el paso anterior se genero un archivo <code>container-test-results.html</code> el cual contiene el resultado del analisis que deberia ser similar a lo siguiente:</li>
+</ol>
+<p><img src="https://github.com/UPT-FAING-EPIS/lab_calidad_02/assets/10199939/b7515f19-0d6d-4401-b3ca-386a436ae6bf" alt="image"></p>
+<ol start="21">
+<li>Abrir un nuevo navegador de internet o pestaña con la url de su repositorio de Github <code>https://github.com/UPT-FAING-EPIS/nombre_de_su_repositorio</code>, abrir la pestaña con el nombre <em>Settings</em>, en la opción <em>Secrets and Actions</em>, selecionar Actions y hacer click en el botón <em>New Respository Token</em>, en la ventana colocar en Nombre (Name): SNYK_TOKEN y en Secreto (Secret): el valor del token de Snyk Cloud, guardado previamente</li>
+</ol>
+<p><img src="https://github.com/user-attachments/assets/2a9d703c-3531-42c8-8f63-d386e86be11f" alt="image"></p>
+<ol start="22">
+<li>En el VS Code, proceder a crear la carpeta .github/workflow y dentro de esta crear el archivo snyk.yml con el siguiente contenido.</li>
+</ol>
+<pre><code class="lang-Yaml">name: Snyk Analysis
+env:
+  DOTNET_VERSION: '8.x'                     # la versión de .NET
+on: push
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: snyk/actions/setup@master
+      - name: Configurando la versión de NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}  
+      - name: Snyk monitor
+        run: snyk code test --sarif-file-output=snyk.sarif
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}          
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: snyk.sarif
+</code></pre>
+<hr>
+<h2 id="actividades-encargadas">Actividades Encargadas</h2>
+<ol>
+<li>Adicionar al archivo de snyk.yml los pasos necesarios para generar el reporte en formato HTML y subirlo como un artefacto en el resultado del job.</li>
+</ol>
+<pre><code class="lang-Yaml">name: Snyk Analysis
+env:
+  DOTNET_VERSION: '9.x'   # versión actual de tu proyecto
+on: push
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: snyk/actions/setup@master
+
+      - name: Configurando la versión de NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Snyk monitor
+        run: snyk code test --json | snyk-to-html -o snyk-report.html
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: snyk.sarif
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v3
+        with:
+          name: snyk-html-report
+          path: snyk-report.html
+
+</code></pre>
+<ol start="2">
+<li>Completar la documentación de todas las clases y generar una automatizaciòn .github/workflows/publish_docs.yml (Github Workflow) utilizando DocFx (init, metadata y build) y publicar el site de documentaciòn generado en un Github Page.</li>
+</ol>
+<pre><code class="lang-Yaml">name: Publish Documentation
+on:
+  push:
+    branches: [ &quot;main&quot; ]
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.x'
+
+      - name: Install DocFX
+        run: dotnet tool install -g docfx
+
+      - name: Build documentation (init, metadata, build)
+        run: |
+          docfx init -y
+          docfx metadata docfx.json
+          docfx build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+
+</code></pre>
+<ol start="3">
+<li>Generar una automatización de nombre .github/workflows/package_nuget.yml (Github Workflow) que ejecute:
+<ul>
+<li>Pruebas unitarias y reporte de pruebas automatizadas</li>
+<li>Realice el analisis con SonarCloud.</li>
+<li>Contruya un archivo .nuget a partir del proyecto Bank.Domain y lo publique como un Paquete de Github</li>
+</ul>
+</li>
+</ol>
+<pre><code class="lang-Yaml">name: Package NuGet
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.x'
+
+      - name: Run Unit Tests and Coverage
+        run: dotnet test --collect:&quot;XPlat Code Coverage&quot;
+
+      - name: SonarCloud Analysis
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Build NuGet Package
+        run: dotnet pack ./Bank.WebApi/Bank.WebApi.csproj -c Release -o ./nuget
+
+      - name: Upload NuGet Package as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: nuget-package
+          path: ./nuget/*.nupkg
+
+</code></pre>
+<ol start="4">
+<li>Generar una automatización de nombre .github/workflows/release_version.yml (Github Workflow) que contruya la version (release) del paquete y publique en Github Releases e incluya pero ahi no esta el test unitarios</li>
+</ol>
+<pre><code class="lang-Yaml">name: Release Version
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.x'
+
+      - name: Build Project
+        run: dotnet build -c Release
+
+      - name: Create NuGet Package
+        run: dotnet pack ./Bank.WebApi/Bank.WebApi.csproj -c Release -o ./nuget
+
+      - name: Upload Release Package
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./nuget/*.nupkg
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/dennisdhm7/lab-2025-ii-si784-u1-02-csharp-dennisdhm7/blob/v1.0.0/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
