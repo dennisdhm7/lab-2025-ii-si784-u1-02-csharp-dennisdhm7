@@ -19,13 +19,13 @@ jobs:
           dotnet-version: '9.x'
 
       - name: Restore dependencies
-        run: dotnet restore ./Bank.WebApi/Bank.WebApi.csproj
+        run: dotnet restore ./Bank/Bank.WebApi/Bank.WebApi.csproj
 
       - name: Build Project
-        run: dotnet build ./Bank.WebApi/Bank.WebApi.csproj -c Release
+        run: dotnet build ./Bank/Bank.WebApi/Bank.WebApi.csproj -c Release
 
       - name: Create NuGet Package
-        run: dotnet pack ./Bank.WebApi/Bank.WebApi.csproj -c Release -o ./nuget
+        run: dotnet pack ./Bank/Bank.WebApi/Bank.WebApi.csproj -c Release -o ./nuget
 
       - name: Upload package as artifact
         uses: actions/upload-artifact@v4
