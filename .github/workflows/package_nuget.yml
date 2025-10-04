@@ -36,7 +36,7 @@ jobs:
           export PATH="$PATH:/home/runner/.dotnet/tools"
           dotnet sonarscanner begin \
             /o:"cdhm" \
-            /k:"cdhm_lab-2025-ii-si784-u1-02-csharp-dennisdhm7" \
+            /k:"lab-2025-ii-si784-u1-02-csharp-dennisdhm7" \
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.verbose=true
